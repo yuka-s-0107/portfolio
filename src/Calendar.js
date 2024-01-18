@@ -1,13 +1,66 @@
-//別ファイル（これ）にしたらエラー出た。→App.jsに直接組み込んだ方は出せた。
-
-import React from "react";
+import React, { useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
+import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
 
-export default class Calendar extends React.Component {
-  render() {
-    return (
-      <FullCalendar plugins={[dayGridPlugin]} initialView="dayGridMonth" />
-    );
-  }
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
+export default function Calendar() {
+  const [open, setOpen] = React.useState(false);
+  const [dataStr, setDataStr] = React.useState("");
+  const handleOpen = (arg) => {
+    setDataStr(arg.dataStr);
+    setOpen(true);
+  };
+
+  const handleClose = () => setOpen(false);
+
+  const [eventList, setEventList] = useState([]);
+  const handleDateClick = (data) => {
+    setEventList((list) => [
+      ...list,
+      { title: `title:${data.dateStr}`, date: data.dateStr },
+    ]);
+  };
+
+  return (
+    <>
+      <FullCalendar
+        plugins={[dayGridPlugin, interactionPlugin]}
+        initialView="dayGridMonth"
+        dateClick={handleOpen}
+        events={eventList}
+      />
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Text in a modal
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+          </Typography>
+        </Box>
+      </Modal>
+    </>
+  );
 }
