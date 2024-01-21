@@ -3,10 +3,13 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 
+let maxId = 0;
 const style = {
   position: "absolute",
   top: "50%",
@@ -20,20 +23,27 @@ const style = {
 };
 
 export default function Calendar() {
-  const [open, setOpen] = React.useState(false);
-  const [dataStr, setDataStr] = React.useState("");
+  const [open, setOpen] = React.useState(false); //日付欄を開ける（open）
+  const [dataStr, setDataStr] = React.useState(""); //日付の取得（dataStr）
+
   const handleOpen = (arg) => {
-    setDataStr(arg.dataStr);
+    setDataStr(arg.dateStr);
     setOpen(true);
   };
 
   const handleClose = () => setOpen(false);
 
-  const [eventList, setEventList] = useState([]);
-  const handleDateClick = (data) => {
+  const [event, setEvent] = useState(""); //入力値（event）
+  const [eventList, setEventList] = useState([]); //予定リスト（eventList）
+
+  const handleChangeEvent = (e) => {
+    setEvent(e.target.value);
+  };
+
+  const handleDateClick = () => {
     setEventList((list) => [
       ...list,
-      { title: `title:${data.dateStr}`, date: data.dateStr },
+      { id: ++maxId, title: event, date: `${dataStr}` },
     ]);
   };
 
@@ -53,12 +63,26 @@ export default function Calendar() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          {/* <Typography id="modal-modal-title" variant="h6" component="h2">
             Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          </Typography> */}
+          {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+          </Typography> */}
+          <TextField
+            id="standard-basic"
+            label="schedule"
+            variant="standard"
+            input
+            type="text"
+            value={event}
+            onChange={handleChangeEvent}
+          />
+          <div>
+            <Button variant="text" type="button" onClick={handleDateClick}>
+              save
+            </Button>
+          </div>
         </Box>
       </Modal>
     </>
