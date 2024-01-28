@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
+import jaLocale from "@fullcalendar/core/locales/ja";
 import listPlugin from "@fullcalendar/list";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -15,7 +16,6 @@ import { IconButton } from "@mui/material";
 import Textarea from "@mui/joy/Textarea";
 import { v4 as uuidv4 } from "uuid";
 
-let maxId = 0;
 const style = {
   position: "absolute",
   top: "50%",
@@ -46,7 +46,7 @@ export default function Calendar() {
     setOpen(false);
   }; //外側を押したらmodalを閉じる
 
-  const [event, setEvent] = useState(""); //入力値（event）
+  const [event, setEvent] = useState("")(localStorage.getItem(id) || ""); //入力値（event）
   const [eventList, setEventList] = useState([]); //予定リスト（eventList）
 
   const handleChangeEvent = (e) => {
@@ -65,12 +65,12 @@ export default function Calendar() {
         { id: uuidv4(), title: event, date: `${dataStr}` },
       ]);
     }
-
+    localStorage.setItem(id, event);
     setEvent(""); //textareaを空にする
     setOpen(false); //modalを閉じる
   };
 
-  //編集画面
+  //編集
   const handleEventClick = (info) => {
     console.log(info.event.title);
     console.log(info.event.date);
@@ -82,8 +82,29 @@ export default function Calendar() {
     setOpen(true);
   };
 
+  //削除
+  const handleRemove = () => {
+    setEventList(eventList.filter((e) => e.id !== id));
+    setEvent(""); //textareaを空にする
+    setOpen(false); //modalを閉じる
+  };
+
+  useEffect(() => {
+    const event = JSON.parse(localStorage.getItem("event"));
+    if (event) {
+      setEvent(event);
+    }
+  }, []);
+
   return (
     <>
+      <div>
+        <FullCalendar
+          plugins={[dayGridPlugin]}
+          locales={[jaLocale]}
+          locale="ja"
+        />
+      </div>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
         headerToolbar={{
@@ -104,13 +125,6 @@ export default function Calendar() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          {/* <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography> */}
-          {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography> */}
-
           <Textarea minRows={2} value={event} onChange={handleChangeEvent} />
 
           <div>
@@ -118,16 +132,14 @@ export default function Calendar() {
               save
             </Button>
 
-            {/* <Stack direction="row" spacing={1}> */}
-
-            <IconButton>
+            <IconButton onClick={handleRemove}>
               <DeleteIcon />
             </IconButton>
-
-            {/* </Stack> */}
           </div>
         </Box>
       </Modal>
+
+      <div>{event}</div>
     </>
   );
 }
