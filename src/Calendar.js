@@ -46,11 +46,21 @@ export default function Calendar() {
     setOpen(false);
   }; //外側を押したらmodalを閉じる
 
-  const [event, setEvent] = useState("")(localStorage.getItem(id) || ""); //入力値（event）
+  const [event, setEvent] = useState(""); //入力値（event）
   const [eventList, setEventList] = useState([]); //予定リスト（eventList）
 
   const handleChangeEvent = (e) => {
     setEvent(e.target.value);
+  };
+
+  useEffect(() => {
+    getStorageEventList();
+  }, []);
+
+  const getStorageEventList = () => {
+    return localStorage.getItem("eventList")
+      ? JSON.parse(localStorage.getItem("eventList"))
+      : [];
   };
 
   const handleDateClick = () => {
@@ -65,7 +75,10 @@ export default function Calendar() {
         { id: uuidv4(), title: event, date: `${dataStr}` },
       ]);
     }
-    localStorage.setItem(id, event);
+
+    const target = [...eventList] || [];
+    localStorage.setItem("eventList", JSON.stringify(target));
+
     setEvent(""); //textareaを空にする
     setOpen(false); //modalを閉じる
   };
@@ -85,26 +98,13 @@ export default function Calendar() {
   //削除
   const handleRemove = () => {
     setEventList(eventList.filter((e) => e.id !== id));
+
     setEvent(""); //textareaを空にする
     setOpen(false); //modalを閉じる
   };
 
-  useEffect(() => {
-    const event = JSON.parse(localStorage.getItem("event"));
-    if (event) {
-      setEvent(event);
-    }
-  }, []);
-
   return (
     <>
-      <div>
-        <FullCalendar
-          plugins={[dayGridPlugin]}
-          locales={[jaLocale]}
-          locale="ja"
-        />
-      </div>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
         headerToolbar={{
@@ -112,6 +112,8 @@ export default function Calendar() {
           center: "title",
           right: "dayGridMonth,listWeek",
         }}
+        locales={[jaLocale]}
+        locale="ja"
         initialView="dayGridMonth"
         dateClick={handleOpen}
         events={eventList}
@@ -138,8 +140,6 @@ export default function Calendar() {
           </div>
         </Box>
       </Modal>
-
-      <div>{event}</div>
     </>
   );
 }
