@@ -1,38 +1,38 @@
-import React, { useEffect, useState } from "react";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
-import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
-import jaLocale from "@fullcalendar/core/locales/ja";
-import listPlugin from "@fullcalendar/list";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import DeleteIcon from "@mui/icons-material/Delete";
-import SendIcon from "@mui/icons-material/Send";
-import { IconButton } from "@mui/material";
-import Textarea from "@mui/joy/Textarea";
-import { v4 as uuidv4 } from "uuid";
+import React, { useEffect, useState } from 'react';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
+import interactionPlugin from '@fullcalendar/interaction'; // needed for dayClick
+import jaLocale from '@fullcalendar/core/locales/ja';
+import listPlugin from '@fullcalendar/list';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SendIcon from '@mui/icons-material/Send';
+import { IconButton } from '@mui/material';
+import Textarea from '@mui/joy/Textarea';
+import { v4 as uuidv4 } from 'uuid';
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
   width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
 };
 
 export default function Calendar() {
   const [open, setOpen] = React.useState(false); //日付欄を開ける（open）
-  const [dataStr, setDataStr] = React.useState(""); //日付の取得（dataStr）
+  const [dataStr, setDataStr] = React.useState(''); //日付の取得（dataStr）
   const [isEdit, setIsEdit] = React.useState(false); //編集か否か
-  const [id, setId] = React.useState("");
+  const [id, setId] = React.useState('');
 
   //新規登録画面
   const handleOpen = (arg) => {
@@ -42,11 +42,11 @@ export default function Calendar() {
   };
 
   const handleClose = () => {
-    setEvent("");
+    setEvent('');
     setOpen(false);
   }; //外側を押したらmodalを閉じる
 
-  const [event, setEvent] = useState(""); //入力値（event）
+  const [event, setEvent] = useState(''); //入力値（event）
   const [eventList, setEventList] = useState([]); //予定リスト（eventList）
 
   const handleChangeEvent = (e) => {
@@ -54,32 +54,39 @@ export default function Calendar() {
   };
 
   useEffect(() => {
-    getStorageEventList();
+    const list = getStorageEventList();
+    setEventList(list);
   }, []);
 
   const getStorageEventList = () => {
-    return localStorage.getItem("eventList")
-      ? JSON.parse(localStorage.getItem("eventList"))
+    return localStorage.getItem('eventList')
+      ? JSON.parse(localStorage.getItem('eventList'))
       : [];
+  };
+
+  const setStoregeEventList = (eventList) => {
+    const target = [...eventList] || [];
+    localStorage.setItem('eventList', JSON.stringify(target));
   };
 
   const handleDateClick = () => {
     if (isEdit) {
-      console.log("id:", id);
+      console.log('id:', id);
       setEventList((list) =>
         list.map((e) => (e.id === id ? { ...e, title: event } : e))
       );
+      const target = getStorageEventList().map((e) =>
+        e.id === id ? { ...e, title: event } : e
+      );
+      setStoregeEventList(target);
     } else {
-      setEventList((list) => [
-        ...list,
-        { id: uuidv4(), title: event, date: `${dataStr}` },
-      ]);
+      const newEvent = { id: uuidv4(), title: event, date: `${dataStr}` };
+      setEventList((list) => [...list, newEvent]);
+      const target = [...getStorageEventList(), newEvent];
+      setStoregeEventList(target);
     }
 
-    const target = [...eventList] || [];
-    localStorage.setItem("eventList", JSON.stringify(target));
-
-    setEvent(""); //textareaを空にする
+    setEvent(''); //textareaを空にする
     setOpen(false); //modalを閉じる
   };
 
@@ -98,8 +105,10 @@ export default function Calendar() {
   //削除
   const handleRemove = () => {
     setEventList(eventList.filter((e) => e.id !== id));
+    const target = getStorageEventList().filter((e) => e.id !== id);
+    setStoregeEventList(target);
 
-    setEvent(""); //textareaを空にする
+    setEvent(''); //textareaを空にする
     setOpen(false); //modalを閉じる
   };
 
@@ -108,9 +117,9 @@ export default function Calendar() {
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
         headerToolbar={{
-          left: "prev,next today",
-          center: "title",
-          right: "dayGridMonth,listWeek",
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,listYear',
         }}
         locales={[jaLocale]}
         locale="ja"

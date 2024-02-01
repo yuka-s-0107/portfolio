@@ -1,12 +1,9 @@
-import "./App.css";
-
-import Calendar from "./Calendar";
-import PersistentDrawerLeft from "./PersistentDrawer2";
+import './App.css';
+import PersistentDrawerLeft from './PersistentDrawer';
 
 function App() {
   return (
     <>
-      <Calendar />
       <PersistentDrawerLeft />
     </>
   );
