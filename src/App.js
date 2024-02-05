@@ -1,10 +1,14 @@
+import { RouterProvider } from 'react-router-dom';
 import './App.css';
-import PersistentDrawerLeft from './PersistentDrawer';
+
+import RoutesLink from './RoutesLink';
+import QueryPoke from './QueryPoke';
 
 function App() {
   return (
     <>
-      <PersistentDrawerLeft />
+      <RouterProvider router={RoutesLink} />
+      {/* <QueryPoke /> */}
     </>
   );
 }

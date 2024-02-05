@@ -15,7 +15,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import SideMenu from './SideMenu';
 import Calendar from './Calendar';
 import QueryPoke from './QueryPoke';
-import { BrowserRouter, RouterProvider } from 'react-router-dom';
+import { BrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import RoutesLink from './RoutesLink';
 
 const drawerWidth = 240;
@@ -119,14 +119,16 @@ export default function PersistentDrawerLeft() {
           </IconButton> */}
         </DrawerHeader>
         <Divider />
-        <BrowserRouter>
-          <SideMenu />
-        </BrowserRouter>
+
+        <SideMenu />
       </Drawer>
 
       <Main open={open}>
         <DrawerHeader />
-        <Box sx={{ padding: '15px' }}></Box>
+
+        <Box sx={{ padding: '15px' }}>
+          <Outlet />
+        </Box>
       </Main>
     </Box>
   );

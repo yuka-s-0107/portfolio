@@ -31,24 +31,6 @@ export default function SideMenu() {
           </ListItemText>
         </ListItem>
       </List>
-      {/* <RouterProvider router={RoutesLink} /> */}
-      <Outlet />
-      {/* <List>
-        {['Calendar', 'API'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? (
-                  <CalendarMonthOutlinedIcon />
-                ) : (
-                  <BuildOutlinedIcon />
-                )}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List> */}
     </>
   );
 }
