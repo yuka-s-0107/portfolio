@@ -25,6 +25,7 @@ const fetchPoke2 = async (id = getRandomValue2()) => {
   }
   throw new Error(res.statusText);
 };
+
 const promise1 = () =>
   new Promise((resolve, reject) => {
     fetchPoke1();
@@ -85,11 +86,11 @@ export default function QueryPoke() {
           alt="pokeimg"
         />
         {/* <p>{data?.name}</p> */}
-        <img
+        {/* <img
           style={{ width: 150, height: 150 }}
           src={data?.sprites?.front_default}
           alt="pokeimg"
-        />
+        /> */}
       </div>
     </>
   );
