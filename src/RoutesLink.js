@@ -5,11 +5,11 @@ import {
 } from 'react-router-dom';
 import Calendar from './Calendar';
 import QueryPoke from './QueryPoke';
-import SideMenu from './SideMenu';
+import PersistentDrawer from './PersistentDrawer';
 
 const RoutesLink = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<SideMenu />}>
+    <Route path="/" element={<PersistentDrawer />}>
       <Route path="/calendar" element={<Calendar />} />
       <Route path="/api" element={<QueryPoke />} />
     </Route>
