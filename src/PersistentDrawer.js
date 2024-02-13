@@ -17,6 +17,7 @@ import Calendar from './Calendar';
 import QueryPoke from './QueryPoke';
 import { BrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import RoutesLink from './RoutesLink';
+import AboutMe from './AboutMe';
 
 const drawerWidth = 240;
 
@@ -92,10 +93,11 @@ export default function PersistentDrawerLeft() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            TITLE
+            My PORTFOLIO
           </Typography>
         </Toolbar>
       </AppBar>
+
       <Drawer
         sx={{
           width: drawerWidth,
@@ -128,6 +130,7 @@ export default function PersistentDrawerLeft() {
 
         <Box sx={{ padding: '15px' }}>
           <Outlet />
+          {/* <AboutMe /> */}
         </Box>
       </Main>
     </Box>

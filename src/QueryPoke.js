@@ -1,8 +1,8 @@
-import { List } from '@mui/material';
-import { useDebugValue, useEffect, useState } from 'react';
+import { Button, Snackbar } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-//乱数
+//1-100の乱数
 const getRandomValue = () => {
   return Math.floor(Math.random() * 99) + 1;
 };
@@ -16,45 +16,16 @@ const fetchPoke = async (id = getRandomValue()) => {
 };
 
 export default function QueryPoke() {
-  const [id, setId] = useState(1);
-  const [reverse, setReverse] = useState(true);
-  const [reverse2, setReverse2] = useState(true);
-  const [reverse3, setReverse3] = useState(true);
-  const [reverse4, setReverse4] = useState(true);
-  const [reverse5, setReverse5] = useState(true);
-  const [reverse6, setReverse6] = useState(true);
-  const [reverse7, setReverse7] = useState(true);
-  const [reverse8, setReverse8] = useState(true);
-  const [reverse9, setReverse9] = useState(true);
-  const [reverse10, setReverse10] = useState(true);
-
-  const [data, setData] = useState(null);
-  const [data2, setData2] = useState(null);
-  const [data3, setData3] = useState(null);
-  const [data4, setData4] = useState(null);
-  const [data5, setData5] = useState(null);
-  const [data6, setData6] = useState(null);
-  const [data7, setData7] = useState(null);
-  const [data8, setData8] = useState(null);
-  const [data9, setData9] = useState(null);
-  const [data10, setData10] = useState(null);
-
   const [list, setList] = useState([]);
+
+  const [selected, setSelected] = useState(null);
+  const [selected2, setSelected2] = useState(null);
+  const [isHit, setIsHit] = useState(false);
+
+  const [open, setOpen] = useState(false);
 
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
-  const [selectedCards, setSelectedCards] = useState([]);
-  const [isMatched, setIsMatched] = useState(false);
-  const [isMatched2, setIsMatched2] = useState(false);
-  const [isMatched3, setIsMatched3] = useState(false);
-  const [isMatched4, setIsMatched4] = useState(false);
-  const [isMatched5, setIsMatched5] = useState(false);
-  const [isMatched6, setIsMatched6] = useState(false);
-  const [isMatched7, setIsMatched7] = useState(false);
-  const [isMatched8, setIsMatched8] = useState(false);
-  const [isMatched9, setIsMatched9] = useState(false);
-  const [isMatched10, setIsMatched10] = useState(false);
 
   function shuffle(array) {
     return [...array].toSorted(() => Math.random() - 0.5);
@@ -74,45 +45,41 @@ export default function QueryPoke() {
   };
 
   useEffect(() => {
-    searchPoke();
-    searchPoke();
-    searchPoke();
-    searchPoke();
-    searchPoke();
-    searchPoke();
-    searchPoke();
-    searchPoke();
-    searchPoke();
-    searchPoke();
+    for (let i = 0; i < 5; i++) {
+      searchPoke();
+    }
   }, []);
 
-  const handleClick = () => {
-    // setList((list) =>
-    //   list.map((v) =>
-    //     v.tId === data.tId ? { ...data, reverse: !data.reverse } : v
-    //   )
-    // );
-    setSelectedCards([...selectedCards, list]);
-  };
-  useEffect(() => {
-    if (selectedCards.length === 2) {
-      checkMatch();
+  const handleClick = async (data) => {
+    //表のカードは裏にしない
+    if (!data.reverse) {
+      return;
     }
-  }, [selectedCards]);
-
-  const checkMatch = () => {
-    if (selectedCards[0].id === selectedCards[1].id) {
-      list.map((v) => {
-        if (v.id === selectedCards[0].id) {
-          return { ...List, isMatched: true };
-        }
-        return list;
-      });
-
-      console.log('マッチ');
+    //結果のポップバー表示中は裏にしない
+    if (open) {
+      return;
+    }
+    //裏返す
+    reverseCard(data);
+    //1枚目だったらselectedに設定して処理終了
+    if (!selected) {
+      setSelected(data);
+      return;
+    }
+    //2枚目だったら
+    //カードの一致判定
+    if (selected.id === data.id) {
+      setIsHit(true);
     } else {
-      console.log('notマッチ');
+      setIsHit(false);
     }
+    setSelected2(data);
+    setOpen(true);
+  };
+  const reverseCard = (data, isBack = false) => {
+    setList((list) =>
+      list.map((v) => (v.tId === data.tId ? { ...data, reverse: isBack } : v))
+    );
   };
 
   if (isLoading) {
@@ -123,55 +90,48 @@ export default function QueryPoke() {
     return <p>Error: {error}</p>;
   }
 
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    //間違っていたら戻す(裏返す)
+    if (!isHit) {
+      reverseCard(selected, true);
+      reverseCard(selected2, true);
+    }
+    setSelected(null);
+    setSelected2(null);
+    setOpen(false);
+  };
+
+  const action = (
+    <>
+      <Button size="small" onClick={handleClose}>
+        OK
+      </Button>
+    </>
+  );
+
   return (
     <>
-      {[...list.slice(0, 20)].map((data) => {
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={open}
+        action={action}
+        message={isHit ? '正解' : '不正解'}
+      />
+      {[...list].map((data) => {
         return (
-          // <img
-          //   key={data.tId}
-          //   className=""
-          //   style={{ width: 250, height: 250 }}
-          //   src={data?.sprites?.front_default}
-          //   alt="pokeimg"
-          //   selectedCards={selectedCards}
-          //   setSelectedCards={setSelectedCards}
-          //   onClick={handleClick}
-          // />
           <img
             key={data.tId}
             className=""
             style={{ width: 150, height: 150 }}
-            src={data.reverse ? '/tramp.jpg' : data?.sprites?.front_default}
+            src={data.revese ? '/tramp.jpg' : data?.sprites?.front_default}
             alt="pokeimg"
-            selectedCards={selectedCards}
-            setSelectedCards={setSelectedCards}
-            onClick={handleClick}
+            onClick={() => handleClick(data)}
           />
         );
       })}
     </>
   );
 }
-
-// return (
-//   <>
-//     {[...list.slice(0, 20)].map((data) => {
-//       return (
-//         <img
-//           key={data.tId}
-//           className=""
-//           style={{ width: 150, height: 150 }}
-//           src={data.reverse ? '/tramp.jpg' : data?.sprites?.front_default}
-//           alt="pokeimg"
-//           onClick={() =>
-//             setList((list) =>
-//               list.map((v) =>
-//                 v.tId === data.tId ? { ...data, reverse: !data.reverse } : v
-//               )
-//             )
-//           }
-//         />
-//       );
-//     })}
-//   </>
-// );

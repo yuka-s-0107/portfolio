@@ -6,8 +6,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemButton from '@mui/material/ListItemButton';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined';
-import { Link, Outlet, RouterProvider } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import RoutesLink from './RoutesLink';
+import FaceOutlinedIcon from '@mui/icons-material/FaceOutlined';
 
 export default function SideMenu() {
   return (
@@ -15,6 +16,13 @@ export default function SideMenu() {
       <List>
         <ListItem>
           <ListItemText>
+            <ListItemButton>
+              <ListItemIcon>
+                <FaceOutlinedIcon />
+                <Link to="/">Plofile</Link>
+              </ListItemIcon>
+            </ListItemButton>
+
             <ListItemButton>
               <ListItemIcon>
                 <CalendarMonthOutlinedIcon />
