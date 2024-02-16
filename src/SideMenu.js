@@ -19,7 +19,7 @@ export default function SideMenu() {
             <ListItemButton>
               <ListItemIcon>
                 <FaceOutlinedIcon />
-                <Link to="/">Plofile</Link>
+                <Link to="/">Introduction</Link>
               </ListItemIcon>
             </ListItemButton>
 

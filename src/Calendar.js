@@ -7,11 +7,9 @@ import listPlugin from '@fullcalendar/list';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
-import SendIcon from '@mui/icons-material/Send';
 import { IconButton } from '@mui/material';
 import Textarea from '@mui/joy/Textarea';
 import { v4 as uuidv4 } from 'uuid';
@@ -58,12 +56,14 @@ export default function Calendar() {
     setEventList(list);
   }, []);
 
+  //ローカルストレージから値を取得
   const getStorageEventList = () => {
     return localStorage.getItem('eventList')
       ? JSON.parse(localStorage.getItem('eventList'))
       : [];
   };
 
+  //ローカルストレージに値を保持
   const setStoregeEventList = (eventList) => {
     const target = [...eventList] || [];
     localStorage.setItem('eventList', JSON.stringify(target));
@@ -119,7 +119,7 @@ export default function Calendar() {
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth,listYear',
+          right: 'dayGridMonth,listYear', //listYearで一覧表示を年に変更
         }}
         locales={[jaLocale]}
         locale="ja"

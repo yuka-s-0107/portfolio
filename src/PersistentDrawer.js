@@ -13,11 +13,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import SideMenu from './SideMenu';
-import Calendar from './Calendar';
-import QueryPoke from './QueryPoke';
 import { BrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import RoutesLink from './RoutesLink';
-import AboutMe from './AboutMe';
 
 const drawerWidth = 240;
 
@@ -93,7 +90,7 @@ export default function PersistentDrawerLeft() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            My PORTFOLIO
+            Yuka's PORTFOLIO
           </Typography>
         </Toolbar>
       </AppBar>
@@ -130,7 +127,6 @@ export default function PersistentDrawerLeft() {
 
         <Box sx={{ padding: '15px' }}>
           <Outlet />
-          {/* <AboutMe /> */}
         </Box>
       </Main>
     </Box>
