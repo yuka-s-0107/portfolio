@@ -2,14 +2,16 @@ import { Button, Snackbar } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-const PAIR_COUNT = 1;
+const PAIR_COUNT = 4;
 
 //1-100の乱数
 const getRandomValue = () => {
   return Math.floor(Math.random() * 99) + 1;
 };
 
+const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 const fetchPoke = async (id = getRandomValue()) => {
+  await sleep(500);
   const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
   if (res.ok) {
     return res.json();

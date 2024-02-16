@@ -23,7 +23,7 @@ function AboutMe() {
       {/* &nbsp;は半角とほぼ同じ大きさのスペース
       &thinsp;は半角よりやや小さいスペース */}
       <h1 style={{ color: '#1a252f', fontSize: '22px', lineHeight: '30px' }}>
-        AAA 白石 悠華（Shiraishi Yuka）
+        白石 悠華（Shiraishi Yuka）
       </h1>
       <p style={{ color: '#1a252f', fontSize: '16px' }}>
         <li> 1999年01月07日 生まれ（25歳）</li>
