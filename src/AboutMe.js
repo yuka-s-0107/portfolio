@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { light } from '@mui/material/styles/createPalette';
 
 function AboutMe() {
   return (
@@ -15,69 +16,38 @@ function AboutMe() {
           padding: '0.5em 0 0.5em 1.5em',
         }}
       >
-        <h2 style={{ color: '#1976d2', fontSize: '35px', textAlign: 'center' }}>
+        <h1 style={{ color: '#1976d2', fontSize: '35px', textAlign: 'center' }}>
           Thank you for visiting my portfolio
-        </h2>
+        </h1>
       </motion.div>
 
-      {/* &nbsp;は半角とほぼ同じ大きさのスペース
-      &thinsp;は半角よりやや小さいスペース */}
-      <h1 style={{ color: '#1a252f', fontSize: '22px', lineHeight: '30px' }}>
+      <h1 style={{ fontSize: '22px', lineHeight: '30px' }}>
         白石 悠華（Shiraishi Yuka）
       </h1>
-      <p style={{ color: '#1a252f', fontSize: '16px' }}>
-        <li> 1999年01月07日 生まれ（25歳）</li>
-        <li>
-          2023年9月4日～2024年2月18日まで侍エンジニアにてフロントエンドのプログラミングを学習しました。
-        </li>
+      <p style={{ fontSize: '16px' }}>
+        侍エンジニアにてフロントエンドのプログラミングを学習しました。
       </p>
+      <li>内容 : HTML, CSS, JavaScript, React, MUI</li>
+      <li>期間 : 2023年9月～2024年2月</li>
 
       <br />
-      <h1 style={{ color: '#1a252f', fontSize: '22px', lineHeight: '30px' }}>
-        アプリについて
-      </h1>
+      <h1 style={{ fontSize: '22px', lineHeight: '30px' }}>アプリについて</h1>
       <p
         style={{
-          color: '#1a252f',
-          fontSize: '16px',
           textDecorationLine: 'underline',
         }}
       >
         Calendar
       </p>
-      <p>
-        fullCalendarを用いて作成しました。
-        <br />
-        私自身が日記として使いたかったこともあり、textareaで長文記入を可能にし、年間の一覧表示ができるよう設定しました。
-        <br />
-        <p
-          style={{
-            color: '#1a252f',
-            fontSize: '16px',
-            textDecorationLine: 'underline',
-          }}
-        >
-          API
-        </p>
-        <p>
-          ポケモンAPIを用いて神経衰弱を作成しました。
-          <br />
-        </p>
-        <p
-          style={{
-            color: '#1a252f',
-            fontSize: '16px',
-            textDecorationLine: 'underline',
-          }}
-        >
-          使用技術
-        </p>
-        <p>
-          フロントエンド
-          <br />
-          （HTML, css, JavaScript, React, MUI）
-        </p>
+      <p>日記としても使えるカレンダーアプリ</p>
+      <p
+        style={{
+          textDecorationLine: 'underline',
+        }}
+      >
+        API
       </p>
+      <p>ポケモンAPIを用いた一人で遊べる神経衰弱ゲーム</p>
     </>
   );
 }

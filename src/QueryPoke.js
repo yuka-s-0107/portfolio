@@ -2,7 +2,7 @@ import { Button, Snackbar } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-const PAIR_COUNT = 4;
+const PAIR_COUNT = 5;
 
 //1-100の乱数
 const getRandomValue = () => {
